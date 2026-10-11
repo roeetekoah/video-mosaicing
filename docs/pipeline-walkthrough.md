@@ -109,6 +109,16 @@ The renderer checks for folds, projective horizons and singular geometry. First/
 
 The view parameter also has a more specific meaning now: it selects an anchor within the active input image. Originally it targeted a seam position in a warped overlap. Equal numerical alpha values across the two renderers are not a calibrated match between physical viewpoints.
 
+### A sequence needs a shared coordinate system
+
+`render_scan` builds an individual manifold panorama. Its strip widths and accumulated vertical offsets depend on alpha. Rendering many alpha values independently therefore changes both the observations and the output projection. Padding those images to equal dimensions does not make a coherent viewpoint video: buildings can stretch and the scene can tilt between frames.
+
+`render_scan_sweep` instead constructs one alpha=0.5 rectified atlas and holds it fixed. Each output pixel has a reference frame and source coordinate. If `C[k]` is the product of forward pairwise homographies up to frame k, an observation in reference frame i maps to frame j through `C[j] @ inverse(C[i])`. The output coordinate stays unchanged. Source selection chooses the frame whose central column observation lies closest to the requested source-image anchor.
+
+Transport is restricted to the connected visibility interval containing the original observation, with positive projective depth. This prevents wide-pan rays from wrapping behind the camera or re-entering after an unseen gap. If a requested observation does not support a pixel, the renderer retains that pixel's measured reference observation and records the fallback count and actual provenance. No missing reference pixel is filled.
+
+This is an implementation extension for coherent source-observation sweeps, rather than a claim of calibrated stereo. It uses the local manifold as its atlas, not a single original reference image. It does not apply optical-flow interpolation, crossfading, post-render stabilization, or horizon leveling. Parallax and moving content can still break contours. Tests check fixed world rays against independent camera matrices, changing source provenance, real layered-scene changes, wide-pan visibility, and all four scan orientations.
+
 ## 5. Borders, exposure and blending
 
 Kessaria and Iguazu encode black side bars occupying one-eighth of each side. The declared active bounds `(0.125, 0, 0.875, 1)` exclude those bars in memory and preserve all scene pixels. Both methods receive exactly the same active area in the fair comparison. Removing padding improved the original Kessaria baseline substantially too; that gain must not be credited exclusively to the replacement estimator.

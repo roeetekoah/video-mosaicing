@@ -15,7 +15,7 @@ from video_mosaicing.io import input_digest, iter_frames, save_result
 from video_mosaicing.pipeline import MosaicConfig, prepare_scan, render_scan_sweep
 
 
-def encode_views(images, output, fps=8):
+def encode_views(images, output, fps=30):
     """Encode BGR images at their native pixel scale, with padding only."""
     height = max(im.shape[0] for im in images)
     width = max(im.shape[1] for im in images)
@@ -44,8 +44,8 @@ def main():
     parser.add_argument('input', type=Path)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--active-area', type=float, nargs=4)
-    parser.add_argument('--steps', type=int, default=21)
-    parser.add_argument('--fps', type=int, default=8)
+    parser.add_argument('--steps', type=int, default=101)
+    parser.add_argument('--fps', type=int, default=30)
     parser.add_argument('--max-side', type=int, default=640)
     args = parser.parse_args()
     if args.steps < 2 or args.fps < 1:
