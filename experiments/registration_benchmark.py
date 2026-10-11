@@ -19,13 +19,14 @@ from video_mosaicing.pipeline import crop_active
 from video_mosaicing.registration import MotionError,RegistrationConfig,correspondences,detect,estimate_features
 
 
-def benchmark(path,area=None):
-    frames = {i:crop_active(f,area) for i,f in iter_frames(path)}
+def benchmark(path,area=None,*,max_side=640,samples=None,pairs=5):
+    frames = {i:crop_active(f,area) for i,f in iter_frames(path,max_side)}
     n = len(frames)
-    indices = np.unique(np.linspace(0,n-1,min(n,int(np.clip(.1*n,40,120)))).round().astype(int))
+    count = samples if samples is not None else int(np.clip(.1*n,40,120))
+    indices = np.unique(np.linspace(0,n-1,min(n,count)).round().astype(int))
     cfg = RegistrationConfig()
     records = []
-    for p in np.linspace(0,len(indices)-2,5).round().astype(int):
+    for p in np.unique(np.linspace(0,len(indices)-2,min(pairs,len(indices)-1)).round().astype(int)):
         ia,ib = int(indices[p]),int(indices[p+1])
         a,b = frames[ia],frames[ib]
         fa,fb = detect(a,cfg),detect(b,cfg)
@@ -47,7 +48,7 @@ def benchmark(path,area=None):
         records.append(item)
     comparable = [r for r in records if r['errors']['robust_selected'] is not None]
     summary = {model:float(np.median([r['errors'][model]['median_px'] for r in comparable])) if comparable else None for model in ('legacy_lk','robust_selected')}
-    return dict(input_name=path.name,input_sha256=input_digest(path),seed=47,max_side=640,active_area=area,pairs=records,accepted_pairs=len(comparable),total_pairs=len(records),median_of_comparable_pair_medians_px=summary)
+    return dict(input_name=path.name,input_sha256=input_digest(path),seed=47,max_side=max_side,active_area=area,sampling=dict(method='uniform',sample_count=len(indices),source_indices=indices.tolist()),pairs=records,accepted_pairs=len(comparable),total_pairs=len(records),median_of_comparable_pair_medians_px=summary)
 
 
 if __name__=='__main__':
@@ -55,11 +56,16 @@ if __name__=='__main__':
     parser.add_argument('input',type=Path,nargs='+')
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--active-area',type=float,nargs=4)
+    parser.add_argument('--max-side',type=int,default=640)
+    parser.add_argument('--samples',type=int,help='Uniform frame count; default is the development sampling rule')
+    parser.add_argument('--pairs',type=int,default=5,help='Number of distributed adjacent sample pairs')
     args=parser.parse_args()
+    if args.max_side<32 or (args.samples is not None and args.samples<2) or args.pairs<1:
+        parser.error('max-side >= 32, samples >= 2, and pairs >= 1 required')
     cv2.setNumThreads(1);cv2.setRNGSeed(47)
     results=[]
     for path in args.input:
-        item=benchmark(path,tuple(args.active_area) if args.active_area else None);results.append(item)
+        item=benchmark(path,tuple(args.active_area) if args.active_area else None,max_side=args.max_side,samples=args.samples,pairs=args.pairs);results.append(item)
         print(path.name,item['median_of_comparable_pair_medians_px'],'accepted',item['accepted_pairs'],'/',item['total_pairs'],flush=True)
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(dict(note=__doc__,clips=results),indent=2),encoding='utf-8')

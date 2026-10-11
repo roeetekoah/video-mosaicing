@@ -42,6 +42,25 @@ Trees remains close to its baseline registration accuracy. Its panorama complete
 
 ## What these results establish
 
+### Garden: current renderer versus the historical showcase
+
+Garden was rerun from the original 488-frame video with the current implementation at source revision `2dbad10a35fc5a1c32616611a6187acd2c95c831`. Processing uses maximum side 800 (800×450 frames), every decoded frame, 6-pixel motion spacing, automatic model selection, seed 47, full input bounds, exposure correction off, and blending off. It selects 260 frames and completes all 21 anchors from 0.1 to 0.9. The middle panorama is 2909×526 with 85.3% observed coverage; black areas remain visible. The H.264 sweep contains 40 independently rendered-view frames at 8 fps, traversing the 21 views forward and back without duplicating endpoints.
+
+For the registration comparison, five distributed adjacent pairs are drawn from the historical **80 uniformly sampled frames**, at the same 800-pixel processing resolution for both estimators. The original four-level, 30-iteration rigid LK solver uses border 8 and blur 1.5. All five pairs pass the robust model checks. Median pair-median correspondence error falls from **1.7124 to 0.5095 pixels (70.2% lower)**. These reserved feature correspondences also inform model selection; this is a development proxy, not independent ground truth. Garden's 800-pixel figures should not be pooled directly with the 640-pixel table above.
+
+The [full uncropped visual comparison](../assets/garden/comparison.png) shows the historical saved LK output and the current renderer output at the same pixel scale. The revised result has less accumulated tilt and a more level building façade, while retaining visible breaks around nearby railings. The two methods' alpha values have different meanings, and the original uses 80 frames with feathering while the current run uses 260 with hard strips. This is an end-to-end comparison, not an ablation attributing every change to registration alone.
+
+The [run record](garden-run.json) retains input and output hashes, source revision, configuration, selected frame indices and model counts. Verification decoded every exported video frame and reproduced 2,000 sampled panorama pixels exactly from their recorded source coordinates. [Per-pair errors](garden-registration.json) are also retained. The historical panorama is preserved byte-for-byte; its view is 51/100, at alpha 50/99.
+
+Reproduce the current showcase from a local copy of Garden.mp4:
+
+```sh
+python experiments/export_sweep_video.py Garden.mp4 --max-side 800 --steps 21 --fps 8 --output garden-current
+python experiments/registration_benchmark.py Garden.mp4 --max-side 800 --samples 80 --pairs 5 --output garden-registration.json
+```
+
+No crop, horizon leveling, inpainting, exposure adjustment, or feathering is applied to the showcased current panorama.
+
 This is a usable portfolio release for continuous, textured scans with manageable depth variation. It has a reproducible generated demo, explicit failure behavior, source-pixel provenance, and 53 passing automated checks, including independent calibrated geometry fixtures and the retained LK regression cases. The original coursework received 100/100; that grade is academic context, not a quality score for this extension.
 
 It is not yet a general-purpose solution for arbitrary handheld footage. Five development pairs per clip give a small, selected view of registration accuracy. The validation points also influence model selection. There is no untouched real-video test set or scalar ground-truth score for complete panoramas, and three successful development scans out of four are not an estimated deployment success rate.
