@@ -1,0 +1,487 @@
+{
+  "methodology": "Five distributed frame pairs at the same legacy spacing. Same reserved mutually consistent SIFT correspondences scored for both methods. Validation affects selection; development data, not an untouched test set. Medians summarize comparable pairs only. Boat has one rejected pair and a rejected full scan. Both methods receive identical active bounds. Source videos excluded.",
+  "clips": [
+    {
+      "clip": "Kessaria.mp4",
+      "max_side": 640,
+      "active_area": [
+        0.125,
+        0.0,
+        0.875,
+        1.0
+      ],
+      "accepted_pairs": 5,
+      "total_pairs": 5,
+      "median_of_comparable_pair_medians_px": {
+        "legacy_lk": 1.7364014850586564,
+        "robust_selected": 0.6290944848593847
+      },
+      "full_scan": "Complete: five anchor views",
+      "pairs": [
+        {
+          "source_indices": [
+            0,
+            7
+          ],
+          "validation_count": 69,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 3.188420555321233,
+              "p90_px": 13.036915458984398,
+              "fraction_under_2px": 0.30434782608695654
+            },
+            "robust_selected": {
+              "median_px": 0.7769907261619647,
+              "p90_px": 8.648682078985773,
+              "fraction_under_2px": 0.7681159420289855
+            }
+          }
+        },
+        {
+          "source_indices": [
+            69,
+            76
+          ],
+          "validation_count": 143,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 1.7364014850586564,
+              "p90_px": 3.136318588006699,
+              "fraction_under_2px": 0.5664335664335665
+            },
+            "robust_selected": {
+              "median_px": 0.7090638599693396,
+              "p90_px": 1.4628197571643469,
+              "fraction_under_2px": 0.958041958041958
+            }
+          }
+        },
+        {
+          "source_indices": [
+            131,
+            138
+          ],
+          "validation_count": 161,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 2.668675036100313,
+              "p90_px": 3.995513414702261,
+              "fraction_under_2px": 0.2608695652173913
+            },
+            "robust_selected": {
+              "median_px": 0.6290944848593847,
+              "p90_px": 3.1467998754722957,
+              "fraction_under_2px": 0.8509316770186336
+            }
+          }
+        },
+        {
+          "source_indices": [
+            193,
+            200
+          ],
+          "validation_count": 195,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 1.3577665473301876,
+              "p90_px": 2.626261557619961,
+              "fraction_under_2px": 0.8153846153846154
+            },
+            "robust_selected": {
+              "median_px": 0.48455698975203193,
+              "p90_px": 1.9211595591184165,
+              "fraction_under_2px": 0.9025641025641026
+            }
+          }
+        },
+        {
+          "source_indices": [
+            262,
+            269
+          ],
+          "validation_count": 124,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 1.5302207582947198,
+              "p90_px": 3.131455462951827,
+              "fraction_under_2px": 0.7258064516129032
+            },
+            "robust_selected": {
+              "median_px": 0.5656076382531412,
+              "p90_px": 1.9992497857943334,
+              "fraction_under_2px": 0.8951612903225806
+            }
+          }
+        }
+      ]
+    },
+    {
+      "clip": "Iguazu.mp4",
+      "max_side": 640,
+      "active_area": [
+        0.125,
+        0.0,
+        0.875,
+        1.0
+      ],
+      "accepted_pairs": 5,
+      "total_pairs": 5,
+      "median_of_comparable_pair_medians_px": {
+        "legacy_lk": 0.8829092174106035,
+        "robust_selected": 0.3594547520825672
+      },
+      "full_scan": "Complete: five anchor views",
+      "pairs": [
+        {
+          "source_indices": [
+            0,
+            10
+          ],
+          "validation_count": 55,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 0.9686672559950611,
+              "p90_px": 2.1887897846948827,
+              "fraction_under_2px": 0.8545454545454545
+            },
+            "robust_selected": {
+              "median_px": 0.6290950516616929,
+              "p90_px": 1.9140650196857405,
+              "fraction_under_2px": 0.8909090909090909
+            }
+          }
+        },
+        {
+          "source_indices": [
+            124,
+            134
+          ],
+          "validation_count": 258,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 0.9464427166973457,
+              "p90_px": 1.5455398117348493,
+              "fraction_under_2px": 0.9612403100775194
+            },
+            "robust_selected": {
+              "median_px": 0.4002170071522575,
+              "p90_px": 1.0828950139358675,
+              "fraction_under_2px": 0.9883720930232558
+            }
+          }
+        },
+        {
+          "source_indices": [
+            248,
+            258
+          ],
+          "validation_count": 184,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 0.8829092174106035,
+              "p90_px": 1.9038142708705652,
+              "fraction_under_2px": 0.9184782608695652
+            },
+            "robust_selected": {
+              "median_px": 0.3594547520825672,
+              "p90_px": 1.1196560868016272,
+              "fraction_under_2px": 0.9619565217391305
+            }
+          }
+        },
+        {
+          "source_indices": [
+            362,
+            372
+          ],
+          "validation_count": 117,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 0.6884992082441279,
+              "p90_px": 1.4150255977640613,
+              "fraction_under_2px": 0.9658119658119658
+            },
+            "robust_selected": {
+              "median_px": 0.2660594460776874,
+              "p90_px": 0.7438649394684564,
+              "fraction_under_2px": 0.9743589743589743
+            }
+          }
+        },
+        {
+          "source_indices": [
+            486,
+            496
+          ],
+          "validation_count": 86,
+          "selected_model": "rigid",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 0.36361362952212356,
+              "p90_px": 0.919419781945837,
+              "fraction_under_2px": 0.9767441860465116
+            },
+            "robust_selected": {
+              "median_px": 0.33349293914916134,
+              "p90_px": 0.8299899956169902,
+              "fraction_under_2px": 0.9767441860465116
+            }
+          }
+        }
+      ]
+    },
+    {
+      "clip": "Trees.mp4",
+      "max_side": 640,
+      "active_area": null,
+      "accepted_pairs": 5,
+      "total_pairs": 5,
+      "median_of_comparable_pair_medians_px": {
+        "legacy_lk": 0.5899319913861679,
+        "robust_selected": 0.5761234049962689
+      },
+      "full_scan": "Complete: visible parallax defects",
+      "pairs": [
+        {
+          "source_indices": [
+            0,
+            10
+          ],
+          "validation_count": 120,
+          "selected_model": "rigid",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 0.518913084300024,
+              "p90_px": 1.4528155412311392,
+              "fraction_under_2px": 0.925
+            },
+            "robust_selected": {
+              "median_px": 0.5037968523019222,
+              "p90_px": 1.5147114419240135,
+              "fraction_under_2px": 0.925
+            }
+          }
+        },
+        {
+          "source_indices": [
+            99,
+            109
+          ],
+          "validation_count": 104,
+          "selected_model": "similarity",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 0.6931600391833321,
+              "p90_px": 1.71453078216994,
+              "fraction_under_2px": 0.9038461538461539
+            },
+            "robust_selected": {
+              "median_px": 0.5661874646958607,
+              "p90_px": 1.6077474878335685,
+              "fraction_under_2px": 0.9038461538461539
+            }
+          }
+        },
+        {
+          "source_indices": [
+            188,
+            197
+          ],
+          "validation_count": 84,
+          "selected_model": "rigid",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 0.6622892247197043,
+              "p90_px": 1.7654723805938364,
+              "fraction_under_2px": 0.9047619047619048
+            },
+            "robust_selected": {
+              "median_px": 0.5761234049962689,
+              "p90_px": 1.6633918154770513,
+              "fraction_under_2px": 0.9166666666666666
+            }
+          }
+        },
+        {
+          "source_indices": [
+            276,
+            286
+          ],
+          "validation_count": 53,
+          "selected_model": "rigid",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 0.5899319913861679,
+              "p90_px": 1.3996878253579903,
+              "fraction_under_2px": 0.9245283018867925
+            },
+            "robust_selected": {
+              "median_px": 0.5805376444497259,
+              "p90_px": 1.3634044396496359,
+              "fraction_under_2px": 0.9245283018867925
+            }
+          }
+        },
+        {
+          "source_indices": [
+            375,
+            385
+          ],
+          "validation_count": 78,
+          "selected_model": "rigid",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 0.5414731173991547,
+              "p90_px": 1.4767934312689344,
+              "fraction_under_2px": 0.9615384615384616
+            },
+            "robust_selected": {
+              "median_px": 0.6268892854020539,
+              "p90_px": 1.4420521696933253,
+              "fraction_under_2px": 0.9743589743589743
+            }
+          }
+        }
+      ]
+    },
+    {
+      "clip": "boat.mp4",
+      "max_side": 640,
+      "active_area": null,
+      "accepted_pairs": 4,
+      "total_pairs": 5,
+      "median_of_comparable_pair_medians_px": {
+        "legacy_lk": 36.26203155840797,
+        "robust_selected": 0.2958059451709383
+      },
+      "full_scan": "Rejected: unsupported strip geometry",
+      "pairs": [
+        {
+          "source_indices": [
+            0,
+            10
+          ],
+          "validation_count": 262,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 25.947544534568436,
+              "p90_px": 27.484226579866938,
+              "fraction_under_2px": 0.08778625954198473
+            },
+            "robust_selected": {
+              "median_px": 0.2767177882585825,
+              "p90_px": 44.84835230643051,
+              "fraction_under_2px": 0.6755725190839694
+            }
+          }
+        },
+        {
+          "source_indices": [
+            112,
+            122
+          ],
+          "validation_count": 210,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 27.45027359386351,
+              "p90_px": 28.420204883665864,
+              "fraction_under_2px": 0.01904761904761905
+            },
+            "robust_selected": {
+              "median_px": 0.2606262718775259,
+              "p90_px": 25.829607505622082,
+              "fraction_under_2px": 0.8238095238095238
+            }
+          }
+        },
+        {
+          "source_indices": [
+            224,
+            235
+          ],
+          "validation_count": 145,
+          "selected_model": "affine",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 46.45472735268426,
+              "p90_px": 48.358973086618356,
+              "fraction_under_2px": 0.006896551724137931
+            },
+            "robust_selected": {
+              "median_px": 0.4518744336748445,
+              "p90_px": 49.63127607083947,
+              "fraction_under_2px": 0.7517241379310344
+            }
+          }
+        },
+        {
+          "source_indices": [
+            327,
+            337
+          ],
+          "validation_count": 140,
+          "selected_model": "homography",
+          "failure": null,
+          "errors": {
+            "legacy_lk": {
+              "median_px": 45.07378952295243,
+              "p90_px": 45.963137997863,
+              "fraction_under_2px": 0.02142857142857143
+            },
+            "robust_selected": {
+              "median_px": 0.314894102083294,
+              "p90_px": 11.081233838854216,
+              "fraction_under_2px": 0.8428571428571429
+            }
+          }
+        },
+        {
+          "source_indices": [
+            439,
+            449
+          ],
+          "validation_count": 98,
+          "selected_model": null,
+          "failure": "No spatially supported motion model passed validation",
+          "errors": {
+            "legacy_lk": {
+              "median_px": 30.489187218646755,
+              "p90_px": 51.329637798542066,
+              "fraction_under_2px": 0.02040816326530612
+            },
+            "robust_selected": null
+          }
+        }
+      ]
+    }
+  ]
+}
