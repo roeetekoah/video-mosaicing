@@ -195,6 +195,12 @@ def render_scan(scan,config=MosaicConfig()):
         from .photometry import blend_boundaries
         result.image,blend_evidence = blend_boundaries(result,selected,homographies,config.blend_width,gains)
         result.evidence['blending'] = blend_evidence
+    return _restore_result(scan,result,config,photometry)
+
+
+def _restore_result(scan,result,config,photometry=None):
+    direction,q = scan.direction,scan.orientation_matrix
+    indices = scan.indices
     valid = result.coverage
     result.source_xy[valid] = project(np.linalg.inv(q),result.source_xy[valid])
     result.source_index[valid] = np.array(indices,dtype=np.int32)[result.source_index[valid]]
@@ -208,6 +214,19 @@ def render_scan(scan,config=MosaicConfig()):
     result.evidence['canvas_hw'] = list(result.image.shape[:2])
     result.evidence['geometry_coordinates'] = "direction-normalized active area; provenance coordinates refer to resized input frames before active-area extraction"
     return result
+
+
+def render_scan_sweep(scan,alphas,config=MosaicConfig()):
+    """Yield views sharing one rectified atlas, rather than moving its gauge."""
+    from .sweep import prepare_atlas,render_atlas_view
+    if config.exposure or config.blend_width:
+        raise ValueError('Fixed-atlas sweeps currently require exposure and blending disabled')
+    atlas = prepare_atlas(scan.frames,scan.homographies,reference_alpha=.5)
+    for alpha in alphas:
+        normalized = 1-alpha if scan.direction in ('RL','BT') else alpha
+        result = render_atlas_view(atlas,alpha=normalized)
+        from dataclasses import replace
+        yield _restore_result(scan,result,replace(config,alpha=float(alpha)))
 
 
 def build_mosaic(records,config=MosaicConfig()):

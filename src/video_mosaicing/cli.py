@@ -1,6 +1,5 @@
 """Command-line interface for single panoramas and controlled viewpoint sweeps."""
 import argparse
-from dataclasses import replace
 import json
 from pathlib import Path
 import time
@@ -10,7 +9,7 @@ import numpy as np
 
 from .geometry import GeometryError
 from .io import input_digest,iter_frames,save_result
-from .pipeline import MosaicConfig,prepare_scan,render_scan
+from .pipeline import MosaicConfig,prepare_scan,render_scan,render_scan_sweep
 from .registration import MotionError,RegistrationConfig
 
 
@@ -47,9 +46,10 @@ def main(argv=None):
         manifest = dict(input_name=args.input.name,input_sha256=digest,max_side=args.max_side,
                         frame_stride=args.frame_stride,opencv_version=cv2.__version__,numpy_version=np.__version__,
                         registration_seconds=estimate_seconds,views=[])
+        results = render_scan_sweep(scan,views,cfg) if args.sweep else iter([render_scan(scan,cfg)])
         for i,alpha in enumerate(views):
             render_start = time.perf_counter()
-            result = render_scan(scan,replace(cfg,alpha=alpha))
+            result = next(results)
             result.evidence.update(input_name=args.input.name,input_sha256=digest,max_side=args.max_side,
                                    frame_stride=args.frame_stride,opencv_version=cv2.__version__,numpy_version=np.__version__,
                                    registration_seconds=estimate_seconds,render_seconds=time.perf_counter()-render_start)

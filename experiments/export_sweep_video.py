@@ -1,10 +1,9 @@
 """Export real pipeline panoramas as a full-canvas H.264 viewpoint-sweep video.
 
-Requires FFmpeg on PATH. Each view is rendered separately by render_scan;
-encoding adds black padding to a common canvas, without morphing between views.
+Requires FFmpeg on PATH. Views share a fixed rectified atlas; source observations
+change while the output coordinates stay fixed. No morphing between views.
 """
 import argparse
-from dataclasses import replace
 import json
 from pathlib import Path
 import subprocess
@@ -13,7 +12,7 @@ import cv2
 import numpy as np
 
 from video_mosaicing.io import input_digest, iter_frames, save_result
-from video_mosaicing.pipeline import MosaicConfig, prepare_scan, render_scan
+from video_mosaicing.pipeline import MosaicConfig, prepare_scan, render_scan_sweep
 
 
 def encode_views(images, output, fps=8):
@@ -61,14 +60,13 @@ def main():
     digest = input_digest(args.input)
     images = []
     alphas = np.linspace(.1, .9, args.steps)
-    for index, alpha in enumerate(alphas):
-        result = render_scan(scan, replace(cfg, alpha=float(alpha)))
+    for index, (alpha,result) in enumerate(zip(alphas,render_scan_sweep(scan,alphas,cfg))):
         result.evidence.update(input_name=args.input.name, input_sha256=digest, max_side=args.max_side)
         save_result(result, args.output/f'view-{index:02d}', provenance=False)
         images.append(result.image)
     evidence = encode_views(images, args.output/'sweep.mp4', args.fps)
     evidence.update(input_name=args.input.name, input_sha256=digest, anchors=alphas.tolist(),
-                    selected_source_indices=scan.indices)
+                    selected_source_indices=scan.indices,method='fixed_rectified_atlas_sweep',reference_alpha=.5)
     (args.output/'video.json').write_text(json.dumps(evidence, indent=2)+'\n', encoding='utf-8')
     print(f'Encoded {len(images)} actual pipeline views in {args.output}')
 
