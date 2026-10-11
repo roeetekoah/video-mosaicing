@@ -2,9 +2,9 @@
 
 Generate wide panoramas and controlled strip-view sweeps from a continuous camera scan. The renderer uses symmetric rectified strips based on Peleg and colleagues' *Mosaicing on Adaptive Manifolds*, rather than projecting an entire sequence onto one reference image.
 
-[![Animated camera scan and reconstructed panorama](assets/demo.gif)](assets/demo.mp4)
+https://github.com/user-attachments/assets/e78cf42f-f200-46f8-8add-4d20f2d5fe9e
 
-[Watch the MP4 demo](assets/demo.mp4) · [Full-resolution panorama](assets/harbor.png) · [Per-video comparison](docs/evaluation.md)
+[Download the MP4 demo](assets/demo.mp4) · [Animated preview](assets/demo.gif) · [Full-resolution panorama](assets/harbor.png) · [Per-video comparison](docs/evaluation.md)
 
 The animation shows a generated camera scan and the actual reconstructed panorama, revealed according to each pixel's source frame. It uses the fixed final geometry; it does not imply online reconstruction. Rebuild it with `python experiments/make_showcase.py` (requires FFmpeg). The [evaluation notes](docs/evaluation.md) separately describe real-video results and remaining failures.
 
