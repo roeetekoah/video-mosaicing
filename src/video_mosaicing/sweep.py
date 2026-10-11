@@ -17,7 +17,10 @@ from .geometry import GeometryError, RenderResult, checked_homography, render_re
 def _project_valid(matrix, xy):
     homogeneous = np.concatenate((xy, np.ones((*xy.shape[:-1], 1))), axis=-1) @ matrix.T
     denominator = homogeneous[..., 2]
-    valid = np.isfinite(homogeneous).all(axis=-1) & (np.abs(denominator) > 1e-9)
+    # Products retain positive scale from the adjacent forward transforms.
+    # A negative denominator is behind the camera, even when division would
+    # put its x/y inside the image after a wide pan.
+    valid = np.isfinite(homogeneous).all(axis=-1) & (denominator > 1e-9)
     result = np.full_like(xy, np.nan, dtype=float)
     np.divide(homogeneous[..., :2], denominator[..., None], out=result, where=valid[..., None])
     return result, valid
@@ -63,6 +66,11 @@ def prepare_atlas(frames, homographies, *, reference_alpha=.5):
             xy, finite = _project_valid(cumulative[target] @ inverse, points[columns])
             candidate_xy[target, columns] = xy
             valid[target, columns] = finite & (xy[:, 0] >= 0) & (xy[:, 0] <= w-1) & (xy[:, 1] >= 0) & (xy[:, 1] <= h-1)
+        # Follow only the connected visibility interval containing the actual
+        # observation. A ray may re-enter the numerical image bounds after a
+        # full turn; that is not a supported transport across an unseen gap.
+        valid[owner:, columns] = np.logical_and.accumulate(valid[owner:, columns],axis=0)
+        valid[:owner+1, columns] = np.logical_and.accumulate(valid[:owner+1, columns][::-1],axis=0)[::-1]
     return SweepAtlas(frames, reference, float(reference_alpha), cumulative, owners, points, candidate_xy, valid)
 
 
@@ -72,7 +80,8 @@ def render_atlas_view(atlas, *, alpha=.5):
 One source frame owns each output column. Selection minimizes the distance of
 the column's central observed ray to the requested source-image anchor. At the
 scan ends, the closest available observation supplies the cap. Unsupported
-pixels remain explicitly unobserved; there is no image-to-image stabilization,
+    pixels retain their reference observation when the requested view lacks
+    support. Unobserved reference pixels remain empty. There is no image-to-image stabilization,
 crossfade, optical-flow interpolation, or inpainting.
 """
     if not 0 < alpha < 1:
@@ -110,6 +119,10 @@ crossfade, optical-flow interpolation, or inpainting.
                 image[rows[take], xx[take]] = pixels
             source_index[rows, xx] = target
             source_xy[rows, xx] = mapped
+    fallback = reference.coverage & (source_index < 0)
+    image[fallback] = reference.image[fallback]
+    source_index[fallback] = reference.source_index[fallback]
+    source_xy[fallback] = reference.source_xy[fallback]
     coverage = source_index >= 0
     if coverage.sum() < .5*reference.coverage.sum():
         raise GeometryError('Sweep view has insufficient observed support', dict(alpha=float(alpha)))
@@ -117,7 +130,8 @@ crossfade, optical-flow interpolation, or inpainting.
                     reference_alpha=atlas.reference_alpha, canvas_hw=list(coverage.shape),
                     coverage_fraction=float(coverage.mean()),
                     reference_coverage_fraction=float(reference.coverage.mean()),
+                    reference_fallback_pixels=int(fallback.sum()),
                     selected_frame_per_column=selected.tolist(),
                     reference_geometry=reference.evidence,
-                    observation_policy='One measured source frame per column; nearest supported anchor; missing pixels remain unobserved')
+                    observation_policy='Nearest anchor in connected visibility interval per column; unsupported pixels retain measured reference observations; reference holes remain unobserved')
     return RenderResult(image, coverage, source_index, source_xy, evidence)

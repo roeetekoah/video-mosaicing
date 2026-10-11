@@ -5,7 +5,7 @@ import pytest
 from video_mosaicing.geometry import project
 from video_mosaicing.pipeline import prepare_scan,render_scan_sweep
 from video_mosaicing.sweep import prepare_atlas,render_atlas_view
-from video_mosaicing.synthetic import calibrated_sequence
+from video_mosaicing.synthetic import calibrated_sequence,rotation
 
 
 def test_translation_sweep_changes_observations_without_moving_the_world():
@@ -37,6 +37,7 @@ def test_perspective_sweep_keeps_independent_world_rays_fixed(kind):
     for alpha in np.linspace(.1,.9,9):
         view = render_atlas_view(atlas,alpha=float(alpha))
         assert view.image.shape == base.image.shape
+        np.testing.assert_array_equal(view.coverage,base.coverage)
         assert view.coverage.mean() > .7
         changed += np.count_nonzero(view.coverage & (view.source_index != base.source_index))
         for i,matrix in enumerate(scene.plane_to_images):
@@ -49,6 +50,22 @@ def test_perspective_sweep_keeps_independent_world_rays_fixed(kind):
                                view.source_xy[ys,xs,1,None],cv2.INTER_LINEAR)[:,0]
             np.testing.assert_array_equal(view.image[ys,xs],pixels)
     assert changed > base.coverage.sum()
+
+
+def test_wide_pan_does_not_wrap_behind_camera_or_across_visibility_gaps():
+    h,w,count = 65,91,80
+    k = np.array([[86,0,45],[0,86,32],[0,0,1.]])
+    # One complete turn makes the first and last projective matrices nearly
+    # identical. End caps must still use their own connected observations.
+    poses = [k @ rotation(yaw=t).T for t in np.linspace(0,2*np.pi,count)]
+    homographies = [b @ np.linalg.inv(a) for a,b in zip(poses,poses[1:])]
+    frames = [np.full((h,w,3),i,np.uint8) for i in range(count)]
+    atlas = prepare_atlas(frames,homographies)
+    for alpha in (.1,.5,.9):
+        result = render_atlas_view(atlas,alpha=alpha)
+        assert result.source_index[h//2,0] < 3
+        assert result.source_index[h//2,-2] > count-4
+        np.testing.assert_array_equal(result.coverage,atlas.reference.coverage)
 
 
 def test_layered_sweep_retains_real_view_changes_instead_of_freezing_a_still():
