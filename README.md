@@ -14,11 +14,11 @@ https://github.com/user-attachments/assets/8782f787-a685-4c61-8468-2dfbb1f24fcc
 
 **House · 101 rendered viewpoints from real footage.** Direct multi-frame LK estimates camera motion and local relative-depth slopes; the renderer samples overlapping observations to move through the panorama. The preview is resized from the actual output movie, with every rendered view retained.
 
-[Watch the full-resolution movie](assets/showcase/house-sweep.mp4) · [Open the central panorama](assets/showcase/house-panorama.png) · [Recorded configuration](assets/showcase/showcase.json)
+[Watch the full-resolution movie](https://github.com/user-attachments/assets/8782f787-a685-4c61-8468-2dfbb1f24fcc) · [Open the central panorama](assets/showcase/house-panorama.png) · [Recorded configuration](assets/showcase/showcase.json)
 
 The recorded House run uses 144 source observations and an explicit crop of its encoded side bars. It takes 36.8 seconds for preparation and all 101 views at maximum source dimension 800, excluding encoding and evidence writes. It retains some local distortion; the showcase is a multiperspective panorama, not a calibrated 3D reconstruction.
 
-**Vertical scan — Trees.** The [Trees sweep](assets/showcase/trees-sweep.mp4) shows 101 rendered viewpoints from the original pyramidal LK pipeline. Its portrait animation appears beside the project description in the portfolio. [Animated preview](assets/showcase/trees-sweep.gif) · [Recorded configuration](assets/showcase/trees-showcase.json).
+**Vertical scan — Trees.** The [Trees sweep](https://github.com/user-attachments/assets/a524be17-8340-497b-bc20-414c4ff500e0) shows 101 rendered viewpoints from the original pyramidal LK pipeline. Its portrait animation appears beside the project description in the portfolio. [Animated preview](assets/showcase/trees-sweep.gif) · [Recorded configuration](assets/showcase/trees-showcase.json).
 
 ## How it works
 
