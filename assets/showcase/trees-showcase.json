@@ -1,0 +1,118 @@
+{
+  "generated_at": "2026-10-23T21:05:13.465907+00:00",
+  "input": {
+    "name": "Trees.mp4",
+    "sha256": "e78abf383bd1e5f4cde0b7194f480fd7ce340b111a055b9b58d14eba325a4c1d"
+  },
+  "method": "lk-original",
+  "configuration": {
+    "method": "lk-original",
+    "registration_scale": 0.5,
+    "blur_sigma": 1.5,
+    "active_area": null,
+    "max_canvas_pixels": 20000000,
+    "lk": {
+      "num_levels": 4,
+      "num_iters": 30,
+      "border": 8,
+      "damping": 1e-06,
+      "eps2": 1e-10,
+      "pyr_sigma": 1.0
+    }
+  },
+  "direction": "BT",
+  "source_indices": [
+    0,
+    10,
+    20,
+    30,
+    39,
+    49,
+    59,
+    69,
+    79,
+    89,
+    99,
+    109,
+    118,
+    128,
+    138,
+    148,
+    158,
+    168,
+    178,
+    188,
+    197,
+    207,
+    217,
+    227,
+    237,
+    247,
+    257,
+    267,
+    276,
+    286,
+    296,
+    306,
+    316,
+    326,
+    336,
+    346,
+    355,
+    365,
+    375,
+    385
+  ],
+  "output": {
+    "rendered_views": 101,
+    "alpha_range": [
+      0.0,
+      1.0
+    ],
+    "fps": 15,
+    "video": {
+      "frames": 101,
+      "fps": 15.0,
+      "width": 938,
+      "height": 1538
+    },
+    "gif": {
+      "frames": 101,
+      "width": 300,
+      "height": 492,
+      "duration_ms": 6740,
+      "frame_durations_ms": [
+        60,
+        70
+      ],
+      "loop": 0,
+      "palette_colors": 192,
+      "dither": "ordered Bayer, scale 3"
+    },
+    "presentation": "MP4 is an exact copy of the complete original-LK rendered sweep. GIF retains all 101 views with the complete uncropped canvas, proportionally resized and palette-quantized without interpolation of views."
+  },
+  "single_run_timing_seconds": {
+    "decode_preprocess": 1.4209025999880396,
+    "registration": 8.158274299988989,
+    "preparation": 0.7038453000131994,
+    "preparation_total": 10.283026600023732,
+    "render": 16.106669800006784,
+    "encode": 0.1907618995755911,
+    "pipeline_total": 26.389696400030516
+  },
+  "timing_scope": "Pipeline time covers decoding, preparation and 101 rendered views; excludes video encoding and audit writes.",
+  "source_code_sha256": {
+    "depth_lk.py": "a8b031c7edef4c3b6cee6711bc34212c9ccf4c924c7e286a67db8e44466b1922",
+    "lk_pipeline.py": "308396c7d6d50083d2bc14987594024b1c6344e26c26352f0c3f217dcd197fc4"
+  },
+  "files": {
+    "trees-sweep.mp4": {
+      "sha256": "7d6e4e275f663c725bcb671a99687cf322af397e28cadd87e872a37045da7428",
+      "bytes": 5478334
+    },
+    "trees-sweep.gif": {
+      "sha256": "bb4a7d77672ad243a0f97a9ce997b4f57fd1d3ecb8ef1bc60c01dfd37faca460",
+      "bytes": 3967479
+    }
+  }
+}

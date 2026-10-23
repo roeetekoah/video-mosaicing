@@ -18,6 +18,8 @@ https://github.com/user-attachments/assets/8782f787-a685-4c61-8468-2dfbb1f24fcc
 
 The recorded House run uses 144 source observations and an explicit crop of its encoded side bars. It takes 36.8 seconds for preparation and all 101 views at maximum source dimension 800, excluding encoding and evidence writes. It retains some local distortion; the showcase is a multiperspective panorama, not a calibrated 3D reconstruction.
 
+**Vertical scan — Trees.** The [Trees sweep](assets/showcase/trees-sweep.mp4) shows 101 rendered viewpoints from the original pyramidal LK pipeline. Its portrait animation appears beside the project description in the portfolio. [Animated preview](assets/showcase/trees-sweep.gif) · [Recorded configuration](assets/showcase/trees-showcase.json).
+
 ## How it works
 
 1. **Align overlapping images.** The original pyramidal LK solver estimates horizontal and vertical translation plus in-plane rotation directly from image intensities.
