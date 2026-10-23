@@ -65,7 +65,7 @@ python experiments/registration_benchmark.py Garden.mp4 --max-side 800 --samples
 
 No crop, horizon leveling, inpainting, exposure adjustment, or feathering is applied to the showcased current panorama.
 
-The tested scope is continuous, textured scans with manageable depth variation. The implementation has real Garden output, explicit failure behavior, source-pixel provenance, and 63 automated checks, including temporal world-ray and wide-pan visibility regressions, independent calibrated geometry fixtures, and the retained LK regression cases. These checks do not establish artifact-free motion on arbitrary scenes. The original coursework received 100/100; that grade is academic context, not a quality score for this extension.
+The tested scope is continuous, textured scans with manageable depth variation. The implementation has real Garden output, explicit failure behavior, source-pixel provenance, and 63 automated checks, including temporal world-ray and wide-pan visibility regressions, independent calibrated geometry fixtures, and the retained LK regression cases. These checks do not establish artifact-free motion on arbitrary scenes. The original coursework received 96/100; that grade is academic context, not a quality score for this extension.
 
 It is not yet a general-purpose solution for arbitrary handheld footage. Five development pairs per clip give a small, selected view of registration accuracy. The validation points also influence model selection. There is no untouched real-video test set or scalar ground-truth score for complete panoramas, and three successful development scans out of four are not an estimated deployment success rate.
 

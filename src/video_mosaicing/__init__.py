@@ -1,1 +1,1 @@
-"""Rectified manifold video mosaicing and a pyramidal rigid LK baseline."""
+"""Direct LK panorama sweeps and optional rectified manifold mosaicing."""

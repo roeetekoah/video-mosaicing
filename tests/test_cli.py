@@ -13,7 +13,7 @@ def test_cli_writes_reproducible_sweep_and_provenance(tmp_path):
     inputs=tmp_path/'input frames';inputs.mkdir()
     for i,f in enumerate(scene.frames): cv2.imwrite(str(inputs/f'frame-{i:04d}.png'),f)
     output=tmp_path/'results'
-    assert main([str(inputs),'--output',str(output),'--sweep','.1','.5','.9'])==0
+    assert main([str(inputs),'--method','rectified','--output',str(output),'--sweep','.1','.5','.9'])==0
     run=json.loads((output/'run.json').read_text())
     assert len(run['views'])==3
     assert len(run['input_sha256'])==64
@@ -32,7 +32,7 @@ def test_cli_saves_an_explicit_failure_for_blank_input(tmp_path):
     inputs=tmp_path/'blank';inputs.mkdir()
     for i in range(2): cv2.imwrite(str(inputs/f'{i}.png'),np.zeros((100,140,3),np.uint8))
     output=tmp_path/'failed'
-    with pytest.raises(SystemExit) as exc: main([str(inputs),'--output',str(output)])
+    with pytest.raises(SystemExit) as exc: main([str(inputs),'--method','rectified','--output',str(output)])
     assert exc.value.code==2
     evidence=json.loads((output/'failure.json').read_text())
     assert 'insufficient' in evidence['error']

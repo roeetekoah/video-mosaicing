@@ -13,7 +13,7 @@ def iter_frames(path,max_side=640,*,stride=1):
     def resize(frame):
         if frame is None: raise ValueError("An image could not be decoded")
         scale = min(1.,max_side/max(frame.shape[:2]))
-        return cv2.resize(frame,None,fx=scale,fy=scale,interpolation=cv2.INTER_AREA) if scale<1 else frame
+        return cv2.resize(frame,(round(frame.shape[1]*scale),round(frame.shape[0]*scale)),interpolation=cv2.INTER_AREA) if scale<1 else frame
     if path.is_dir():
         files = sorted(p for p in path.iterdir() if p.suffix.lower() in ('.png','.jpg','.jpeg'))
         for index in range(0,len(files),stride): yield index,resize(cv2.imread(str(files[index])))
